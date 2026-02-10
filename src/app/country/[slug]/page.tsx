@@ -12,12 +12,13 @@ export function generateStaticParams() {
   return Object.values(COUNTRIES).map((c) => ({ slug: slugify(c.name) }));
 }
 
-export function generateMetadata({
+export async function generateMetadata({
   params,
 }: {
-  params: { slug: string };
-}): Metadata {
-  const country = getCountryBySlug(params.slug);
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const country = getCountryBySlug(slug);
   if (!country) return { title: "Country Not Found - BorderIQ" };
 
   return {
@@ -40,12 +41,13 @@ function resolveDestinations(names: string[]): { name: string; code: string; slu
     .filter(Boolean) as { name: string; code: string; slug: string }[];
 }
 
-export default function CountryDetailPage({
+export default async function CountryDetailPage({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }) {
-  const country = getCountryBySlug(params.slug);
+  const { slug } = await params;
+  const country = getCountryBySlug(slug);
   if (!country) notFound();
 
   const visaData = getVisaData();
@@ -243,7 +245,7 @@ export default function CountryDetailPage({
             visa-free access, mobility scores, and discover unique advantages.
           </p>
           <Link
-            href={`/compare?country=${params.slug}`}
+            href={`/compare?country=${slug}`}
             className="inline-flex items-center gap-2 px-6 sm:px-8 py-3 sm:py-3.5 rounded-xl bg-teal-500 text-white font-semibold hover:bg-teal-400 transition-colors duration-200 text-base sm:text-lg"
           >
             <GitCompare className="w-5 h-5" />
