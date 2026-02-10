@@ -1,26 +1,355 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+/* ============================================
+   BorderIQ Design System - Dark Theme
+   Tailwind v4 CSS-based configuration
+   ============================================ */
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  /* --- Color Palette --- */
+
+  /* Base backgrounds */
+  --color-background: #0a0f1a;
+  --color-background-secondary: #0f1629;
+  --color-background-tertiary: #141d35;
+  --color-foreground: #e8edf5;
+  --color-foreground-muted: #8892a8;
+  --color-foreground-subtle: #5a6478;
+
+  /* Navy / Slate scale */
+  --color-navy-950: #060a14;
+  --color-navy-900: #0a0f1a;
+  --color-navy-800: #0f1629;
+  --color-navy-700: #141d35;
+  --color-navy-600: #1c2844;
+  --color-navy-500: #263556;
+  --color-navy-400: #354868;
+  --color-navy-300: #4a5f80;
+  --color-navy-200: #6b7fa0;
+  --color-navy-100: #8d9bb5;
+
+  /* Teal accent scale */
+  --color-teal-500: #14b8a6;
+  --color-teal-400: #2dd4bf;
+  --color-teal-300: #5eead4;
+  --color-teal-200: #99f6e4;
+  --color-teal-600: #0d9488;
+  --color-teal-700: #0f766e;
+
+  /* Status colors */
+  --color-visa-free: #22c55e;
+  --color-visa-on-arrival: #3b82f6;
+  --color-eta: #a855f7;
+  --color-visa-required: #ef4444;
+
+  /* Semantic */
+  --color-border: #1c2844;
+  --color-border-light: #263556;
+  --color-card: #0f1629;
+  --color-card-hover: #141d35;
+  --color-surface: #111827;
+  --color-surface-raised: #1c2844;
+
+  /* Typography */
+  --font-sans: var(--font-inter);
+
+  /* Radius */
+  --radius-card: 0.75rem;
+  --radius-badge: 0.375rem;
+  --radius-pill: 9999px;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* ============================================
+   Base Styles
+   ============================================ */
+
+html {
+  scroll-behavior: smooth;
+  overflow-x: hidden;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  -webkit-text-size-adjust: 100%;
+}
+
+/* Mobile touch targets - ensure minimum 44px height for interactive elements */
+@media (max-width: 768px) {
+  button,
+  a,
+  input,
+  select,
+  textarea {
+    min-height: 44px;
+  }
+
+  /* Prevent horizontal overflow on mobile */
+  main,
+  section {
+    overflow-x: hidden;
+  }
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-navy-900);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-navy-500);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-navy-400);
+}
+
+/* Selection */
+::selection {
+  background: color-mix(in srgb, var(--color-teal-500) 30%, transparent);
+  color: var(--color-foreground);
+}
+
+/* ============================================
+   Custom Utility Classes
+   ============================================ */
+
+/* --- Gradients --- */
+.gradient-primary {
+  background: linear-gradient(135deg, var(--color-teal-500), var(--color-teal-300));
+}
+
+.gradient-hero {
+  background: linear-gradient(
+    180deg,
+    var(--color-navy-800) 0%,
+    var(--color-background) 100%
+  );
+}
+
+.gradient-radial-teal {
+  background: radial-gradient(
+    ellipse at 50% 0%,
+    color-mix(in srgb, var(--color-teal-500) 15%, transparent) 0%,
+    transparent 60%
+  );
+}
+
+.gradient-radial-center {
+  background: radial-gradient(
+    ellipse at 50% 50%,
+    color-mix(in srgb, var(--color-teal-500) 8%, transparent) 0%,
+    transparent 70%
+  );
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, var(--color-teal-400), var(--color-teal-200));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.gradient-border {
+  position: relative;
+  border: 1px solid transparent;
+  background-clip: padding-box;
+  background-origin: border-box;
+}
+
+.gradient-border::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  margin: -1px;
+  border-radius: inherit;
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--color-teal-500) 40%, transparent),
+    color-mix(in srgb, var(--color-teal-500) 10%, transparent)
+  );
+}
+
+/* --- Glass / Card Effects --- */
+.glass {
+  background: color-mix(in srgb, var(--color-navy-800) 60%, transparent);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  border: 1px solid color-mix(in srgb, var(--color-navy-500) 30%, transparent);
+}
+
+.glass-strong {
+  background: color-mix(in srgb, var(--color-navy-800) 80%, transparent);
+  backdrop-filter: blur(24px) saturate(200%);
+  -webkit-backdrop-filter: blur(24px) saturate(200%);
+  border: 1px solid color-mix(in srgb, var(--color-navy-500) 40%, transparent);
+}
+
+.card-elevated {
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  transition: all 0.2s ease;
+}
+
+.card-elevated:hover {
+  background: var(--color-card-hover);
+  border-color: var(--color-border-light);
+  box-shadow:
+    0 4px 24px color-mix(in srgb, #000 30%, transparent),
+    0 0 0 1px color-mix(in srgb, var(--color-teal-500) 5%, transparent);
+}
+
+.card-interactive {
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  transition: all 0.25s ease;
+  cursor: pointer;
+}
+
+.card-interactive:hover {
+  background: var(--color-card-hover);
+  border-color: color-mix(in srgb, var(--color-teal-500) 30%, transparent);
+  box-shadow:
+    0 8px 32px color-mix(in srgb, #000 40%, transparent),
+    0 0 0 1px color-mix(in srgb, var(--color-teal-500) 10%, transparent);
+  transform: translateY(-2px);
+}
+
+/* --- Glow effects --- */
+.glow-teal {
+  box-shadow:
+    0 0 20px color-mix(in srgb, var(--color-teal-500) 20%, transparent),
+    0 0 60px color-mix(in srgb, var(--color-teal-500) 10%, transparent);
+}
+
+.glow-teal-sm {
+  box-shadow: 0 0 12px color-mix(in srgb, var(--color-teal-500) 15%, transparent);
+}
+
+/* --- Badges --- */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.125rem 0.625rem;
+  border-radius: var(--radius-pill);
+  font-size: 0.75rem;
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+.badge-visa-free {
+  background: color-mix(in srgb, var(--color-visa-free) 15%, transparent);
+  color: var(--color-visa-free);
+  border: 1px solid color-mix(in srgb, var(--color-visa-free) 25%, transparent);
+}
+
+.badge-visa-on-arrival {
+  background: color-mix(in srgb, var(--color-visa-on-arrival) 15%, transparent);
+  color: var(--color-visa-on-arrival);
+  border: 1px solid color-mix(in srgb, var(--color-visa-on-arrival) 25%, transparent);
+}
+
+.badge-eta {
+  background: color-mix(in srgb, var(--color-eta) 15%, transparent);
+  color: var(--color-eta);
+  border: 1px solid color-mix(in srgb, var(--color-eta) 25%, transparent);
+}
+
+.badge-visa-required {
+  background: color-mix(in srgb, var(--color-visa-required) 15%, transparent);
+  color: var(--color-visa-required);
+  border: 1px solid color-mix(in srgb, var(--color-visa-required) 25%, transparent);
+}
+
+/* --- Animated accents --- */
+@keyframes pulse-glow {
+  0%, 100% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.5s ease-out forwards;
+}
+
+.animate-slide-up {
+  animation: slide-up 0.6s ease-out forwards;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 3s ease-in-out infinite;
+}
+
+/* --- Table styles --- */
+.table-row-hover {
+  transition: background-color 0.15s ease;
+}
+
+.table-row-hover:hover {
+  background-color: var(--color-navy-700);
+}
+
+/* --- Focus styles --- */
+*:focus-visible {
+  outline: 2px solid var(--color-teal-500);
+  outline-offset: 2px;
+}
+
+/* --- Hide scrollbar for horizontal scroll areas --- */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* --- Dot grid pattern --- */
+.pattern-dots {
+  background-image: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--color-navy-400) 20%, transparent) 1px,
+    transparent 1px
+  );
+  background-size: 24px 24px;
 }
