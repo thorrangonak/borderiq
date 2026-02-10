@@ -1,11 +1,17 @@
 import { Compass } from "lucide-react";
+import type { Metadata } from "next";
 import { getRankings } from "@/lib/load-data";
 import ExploreClient from "./ExploreClient";
 
-export const metadata = {
-  title: "Explore Passports - BorderIQ",
-  description:
-    "Browse and explore passports by region, cover color, and mobility score. Discover travel freedom across 199 countries and territories.",
+export const metadata: Metadata = {
+  title: "Explore World Passports by Region, Color & Score",
+  description: "Browse passports by region, cover color, and mobility score. Discover travel freedom patterns across Africa, Americas, Asia, Europe, and Oceania.",
+  alternates: { canonical: "https://borderiq.io/explore" },
+  openGraph: {
+    title: "Explore World Passports - BorderIQ",
+    description: "Browse passports by region, cover color, and mobility score for 199 countries.",
+    url: "https://borderiq.io/explore",
+  },
 };
 
 export default function ExplorePage() {

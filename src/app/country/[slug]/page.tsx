@@ -19,14 +19,38 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   const country = getCountryBySlug(slug);
-  if (!country) return { title: "Country Not Found - BorderIQ" };
+  if (!country) return { title: "Country Not Found" };
+
+  const rankings = getRankings();
+  const ranking = rankings.find(r => r.country === country.name);
 
   return {
-    title: `${country.name} Passport - Visa Free Travel & Rankings | BorderIQ`,
-    description: `Explore ${country.name}'s passport power. See visa-free destinations, mobility score, rankings, and detailed visa requirements for ${country.name} passport holders.`,
+    title: `${country.name} Passport - Visa-Free Travel, Rankings & Visa Requirements`,
+    description: `${country.name} passport ranked #${ranking?.rank || 'N/A'} globally with ${ranking?.mobilityScore || 0} visa-free destinations. Explore visa requirements, travel freedom, and mobility score for ${country.name} passport holders.`,
+    alternates: { canonical: `https://borderiq.io/country/${slug}` },
+    keywords: [
+      `${country.name} passport`,
+      `${country.name} visa-free`,
+      `${country.name} passport ranking`,
+      `${country.name} visa requirements`,
+      `${country.name} travel`,
+    ],
     openGraph: {
+      title: `${country.name} Passport - Rankings & Visa Data`,
+      description: `${country.name} passport ranked #${ranking?.rank || 'N/A'} with ${ranking?.mobilityScore || 0} visa-free destinations.`,
+      url: `https://borderiq.io/country/${slug}`,
+      images: [{
+        url: `https://flagcdn.com/w1280/${country.code.toLowerCase()}.png`,
+        width: 1280,
+        height: 853,
+        alt: `${country.name} flag`,
+      }],
+    },
+    twitter: {
+      card: 'summary_large_image',
       title: `${country.name} Passport - BorderIQ`,
-      description: `${country.name} passport visa-free travel, rankings, and detailed visa requirements.`,
+      description: `Ranked #${ranking?.rank || 'N/A'} globally with ${ranking?.mobilityScore || 0} visa-free destinations.`,
+      images: [`https://flagcdn.com/w1280/${country.code.toLowerCase()}.png`],
     },
   };
 }
@@ -65,6 +89,38 @@ export default async function CountryDetailPage({
 
   return (
     <div className="min-h-screen bg-slate-900">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'Country',
+            name: meta.name,
+            identifier: meta.code,
+            url: `https://borderiq.io/country/${slug}`,
+            containedInPlace: { '@type': 'Place', name: meta.region },
+            additionalProperty: [
+              { '@type': 'PropertyValue', name: 'Passport Power Rank', value: ranking.rank },
+              { '@type': 'PropertyValue', name: 'Mobility Score', value: ranking.mobilityScore },
+              { '@type': 'PropertyValue', name: 'Visa-Free Destinations', value: ranking.visaFreeCount },
+            ],
+          }),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'BreadcrumbList',
+            itemListElement: [
+              { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://borderiq.io' },
+              { '@type': 'ListItem', position: 2, name: 'Countries', item: 'https://borderiq.io/countries' },
+              { '@type': 'ListItem', position: 3, name: meta.name, item: `https://borderiq.io/country/${slug}` },
+            ],
+          }),
+        }}
+      />
       {/* ===== Hero Section ===== */}
       <section className="relative overflow-hidden">
         {/* Background gradient effects */}

@@ -1,13 +1,19 @@
 import { Trophy, Globe } from "lucide-react";
+import type { Metadata } from "next";
 import { getRankings } from "@/lib/load-data";
 import { REGIONS } from "@/lib/countries";
 import type { PassportRanking } from "@/lib/data";
 import RankingsTable from "./RankingsTable";
 
-export const metadata = {
-  title: "Passport Power Rankings 2026 - BorderIQ",
-  description:
-    "Complete passport power rankings for 2026. Compare visa-free access, mobility scores, and travel freedom for all 199 passports worldwide.",
+export const metadata: Metadata = {
+  title: "Passport Power Rankings 2026 - All 199 Passports Ranked",
+  description: "Complete passport power rankings for 2026. Compare visa-free access, mobility scores, and travel freedom for all 199 passports. Updated with latest visa policy changes.",
+  alternates: { canonical: "https://borderiq.io/rankings" },
+  openGraph: {
+    title: "Passport Power Rankings 2026",
+    description: "Complete passport power rankings. Compare visa-free access and mobility scores for 199 passports.",
+    url: "https://borderiq.io/rankings",
+  },
 };
 
 export default function RankingsPage() {
@@ -23,6 +29,34 @@ export default function RankingsPage() {
 
   return (
     <div className="min-h-screen">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'Table',
+            name: 'Passport Power Rankings 2026',
+            description: 'Global passport power rankings based on visa-free mobility score for 199 countries.',
+            about: {
+              '@type': 'Thing',
+              name: 'Passport Power Index',
+            },
+          }),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'BreadcrumbList',
+            itemListElement: [
+              { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://borderiq.io' },
+              { '@type': 'ListItem', position: 2, name: 'Rankings', item: 'https://borderiq.io/rankings' },
+            ],
+          }),
+        }}
+      />
       {/* Hero Header */}
       <section className="relative overflow-hidden">
         <div className="absolute inset-0 gradient-hero" />

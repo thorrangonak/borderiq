@@ -1,11 +1,17 @@
 import { Globe } from "lucide-react";
+import type { Metadata } from "next";
 import { getRankings } from "@/lib/load-data";
 import CountriesClient from "./CountriesClient";
 
-export const metadata = {
-  title: "All Countries - BorderIQ",
-  description:
-    "Browse all 199 countries and territories. View passport rankings, mobility scores, and visa-free access data for every country in the world.",
+export const metadata: Metadata = {
+  title: "All 199 Countries - Passport Data & Visa Requirements",
+  description: "Complete directory of 199 countries with passport rankings, mobility scores, visa-free access data, and detailed visa requirements.",
+  alternates: { canonical: "https://borderiq.io/countries" },
+  openGraph: {
+    title: "All Countries - BorderIQ",
+    description: "Complete directory of 199 countries with passport data and visa requirements.",
+    url: "https://borderiq.io/countries",
+  },
 };
 
 export default function CountriesPage() {

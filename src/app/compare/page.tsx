@@ -1,9 +1,16 @@
+import type { Metadata } from "next";
 import { COUNTRIES } from '@/lib/countries';
 import CompareClient from './CompareClient';
 
-export const metadata = {
-  title: 'Compare Passports - BorderIQ',
-  description: 'Select two or more passports to compare their visa-free access side by side. Discover common destinations, unique advantages, and combined mobility scores.',
+export const metadata: Metadata = {
+  title: "Compare Passports Side by Side - Visa-Free Access Comparison",
+  description: "Compare up to 4 passports side by side. See shared visa-free destinations, unique access advantages, combined mobility scores, and detailed breakdowns.",
+  alternates: { canonical: "https://borderiq.io/compare" },
+  openGraph: {
+    title: "Compare Passports - BorderIQ",
+    description: "Compare passports side by side. Discover shared and unique visa-free destinations.",
+    url: "https://borderiq.io/compare",
+  },
 };
 
 export default function ComparePage() {
@@ -14,6 +21,21 @@ export default function ComparePage() {
 
   return (
     <div className="min-h-screen">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'WebApplication',
+            name: 'BorderIQ Passport Comparison Tool',
+            url: 'https://borderiq.io/compare',
+            applicationCategory: 'TravelApplication',
+            operatingSystem: 'Web',
+            description: 'Compare up to 4 passports side by side. See shared visa-free destinations and combined mobility scores.',
+            offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+          }),
+        }}
+      />
       {/* Hero header */}
       <section className="relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-background via-background to-navy-800" />

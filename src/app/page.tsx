@@ -1,9 +1,21 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import { Trophy, GitCompare, Bot, Globe, Shield, TrendingUp, Map } from "lucide-react";
 import { getRankings, getWelcomingRanks } from "@/lib/load-data";
 
 import PassportCard from "@/components/ui/PassportCard";
 import WorldMapWrapper from "@/components/features/WorldMapWrapper";
+
+export const metadata: Metadata = {
+  title: "BorderIQ - Global Passport Intelligence | Passport Rankings & Visa Data 2026",
+  description: "Explore 199 passport rankings, visa-free travel scores, and real-time visa requirement data. Compare passports side by side, discover travel freedom with interactive world map.",
+  alternates: { canonical: "https://borderiq.io" },
+  openGraph: {
+    title: "BorderIQ - Global Passport Intelligence",
+    description: "Explore 199 passport rankings and visa-free travel data. Interactive world map, passport comparison, and real-time visa intelligence.",
+    url: "https://borderiq.io",
+  },
+};
 
 export default function Home() {
   const rankings = getRankings();
@@ -31,6 +43,41 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-slate-900">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'FAQPage',
+            mainEntity: [
+              {
+                '@type': 'Question',
+                name: 'What is the strongest passport in 2026?',
+                acceptedAnswer: {
+                  '@type': 'Answer',
+                  text: `The strongest passport in 2026 is determined by the number of destinations its holders can visit visa-free, with visa on arrival, or with an ETA. Check our real-time rankings for the latest data.`,
+                },
+              },
+              {
+                '@type': 'Question',
+                name: 'How is passport power calculated?',
+                acceptedAnswer: {
+                  '@type': 'Answer',
+                  text: 'Passport power is calculated based on the total number of destinations accessible without a traditional visa - including visa-free entry, visa on arrival, and electronic travel authorization (ETA).',
+                },
+              },
+              {
+                '@type': 'Question',
+                name: 'How many passports does BorderIQ track?',
+                acceptedAnswer: {
+                  '@type': 'Answer',
+                  text: 'BorderIQ tracks visa requirements for 199 passports covering over 39,000 visa policies worldwide.',
+                },
+              },
+            ],
+          }),
+        }}
+      />
       {/* ===== Hero Section ===== */}
       <section className="relative overflow-hidden">
         {/* Background gradient effects */}
