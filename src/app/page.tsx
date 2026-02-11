@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import { Trophy, GitCompare, Bot, Globe, Shield, TrendingUp, Map } from "lucide-react";
+import { Trophy, GitCompare, Bot, Globe, Shield, TrendingUp, Map, Combine, Zap } from "lucide-react";
 import { getRankings, getWelcomingRanks } from "@/lib/load-data";
 
 import PassportCard from "@/components/ui/PassportCard";
@@ -121,7 +121,7 @@ export default function Home() {
               className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-xl bg-white/10 text-white font-semibold border border-white/20 hover:bg-white/20 transition-colors duration-200 text-lg"
             >
               <GitCompare className="w-5 h-5" />
-              Compare Passports
+              Combine Passports
             </Link>
           </div>
 
@@ -242,18 +242,18 @@ export default function Home() {
                 <GitCompare className="w-7 h-7 text-blue-400" />
               </div>
               <h3 className="text-xl font-semibold text-white mb-3">
-                Smart Compare
+                Compare & Combine
               </h3>
               <p className="text-gray-400 leading-relaxed">
-                Compare any passports side by side. See shared visa-free
-                destinations, unique access advantages, and detailed breakdowns
-                at a glance.
+                Combine up to 4 passports and see your total travel power.
+                Discover combined mobility score, global rank, and which passport
+                gives the best access to each destination.
               </p>
               <Link
                 href="/compare"
                 className="inline-flex items-center gap-1 text-blue-400 hover:text-blue-300 mt-4 font-medium text-sm transition-colors"
               >
-                Compare Now
+                Combine Passports
                 <span aria-hidden="true">&rarr;</span>
               </Link>
             </div>
@@ -278,6 +278,64 @@ export default function Home() {
                 Try Advisor
                 <span aria-hidden="true">&rarr;</span>
               </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ===== Combined Passport Power CTA ===== */}
+      <section className="relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-r from-teal-500/5 via-blue-500/5 to-purple-500/5" />
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16 lg:py-20">
+          <div className="rounded-3xl bg-gradient-to-br from-slate-800/80 to-slate-900/80 border border-white/10 overflow-hidden">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-0">
+              {/* Left: Text content */}
+              <div className="p-6 sm:p-8 lg:p-12 flex flex-col justify-center">
+                <div className="flex items-center gap-2 mb-4">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-teal-500/20 to-blue-500/20">
+                    <Combine className="w-4 h-4 text-teal-400" />
+                  </div>
+                  <span className="text-teal-400 font-semibold text-sm uppercase tracking-wide">New Feature</span>
+                </div>
+                <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-4">
+                  Combined Passport Power
+                </h2>
+                <p className="text-gray-400 text-base sm:text-lg leading-relaxed mb-6">
+                  Hold multiple passports? Discover your <span className="text-white font-medium">true travel power</span> by combining them.
+                  See your combined mobility score, global rank, and a full destination breakdown showing which passport gives you the best access to each country.
+                </p>
+                <div className="flex flex-col sm:flex-row items-start gap-3">
+                  <Link
+                    href="/compare"
+                    className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-teal-500 to-blue-500 text-white font-semibold hover:from-teal-400 hover:to-blue-400 transition-all duration-200"
+                  >
+                    <Zap className="w-4 h-4" />
+                    Combine Your Passports
+                  </Link>
+                </div>
+              </div>
+              {/* Right: Visual */}
+              <div className="relative p-6 sm:p-8 lg:p-12 flex items-center justify-center bg-white/[0.02]">
+                <div className="absolute inset-0 bg-gradient-to-br from-teal-500/5 to-transparent" />
+                <div className="relative grid grid-cols-2 gap-3 sm:gap-4 w-full max-w-sm">
+                  <div className="rounded-2xl bg-white/5 border border-white/10 p-4 text-center">
+                    <p className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-teal-400 to-blue-400 bg-clip-text text-transparent">2x</p>
+                    <p className="text-gray-400 text-xs sm:text-sm mt-1">More Access</p>
+                  </div>
+                  <div className="rounded-2xl bg-white/5 border border-white/10 p-4 text-center">
+                    <p className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">199</p>
+                    <p className="text-gray-400 text-xs sm:text-sm mt-1">Destinations</p>
+                  </div>
+                  <div className="rounded-2xl bg-white/5 border border-white/10 p-4 text-center">
+                    <p className="text-3xl sm:text-4xl font-bold text-emerald-400">#1</p>
+                    <p className="text-gray-400 text-xs sm:text-sm mt-1">Combined Rank</p>
+                  </div>
+                  <div className="rounded-2xl bg-white/5 border border-white/10 p-4 text-center">
+                    <p className="text-3xl sm:text-4xl font-bold text-orange-400">4</p>
+                    <p className="text-gray-400 text-xs sm:text-sm mt-1">Max Passports</p>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -395,7 +453,8 @@ export default function Home() {
               href="/compare"
               className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3 rounded-xl bg-white/10 text-white font-semibold border border-white/20 hover:bg-white/20 transition-colors"
             >
-              Compare Passports
+              <Combine className="w-4 h-4" />
+              Combine Passports
             </Link>
           </div>
         </div>
