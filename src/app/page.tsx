@@ -118,10 +118,17 @@ export default function Home() {
             </Link>
             <Link
               href="/compare"
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-xl bg-white/10 text-white font-semibold border border-white/20 hover:bg-white/20 transition-colors duration-200 text-lg"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-white/10 text-white font-semibold border border-white/20 hover:bg-white/20 transition-colors duration-200"
             >
               <GitCompare className="w-5 h-5" />
-              Combine Passports
+              Compare
+            </Link>
+            <Link
+              href="/combine"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-gradient-to-r from-purple-500/20 to-blue-500/20 text-white font-semibold border border-purple-500/30 hover:from-purple-500/30 hover:to-blue-500/30 transition-all duration-200"
+            >
+              <Combine className="w-5 h-5" />
+              Combine
             </Link>
           </div>
 
@@ -213,70 +220,80 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
             {/* Feature 1: Passport Rankings */}
-            <div className="group rounded-2xl bg-white/5 border border-white/10 p-5 sm:p-8 hover:border-teal-500/50 transition-all duration-300">
-              <div className="w-14 h-14 rounded-xl bg-teal-500/10 flex items-center justify-center mb-5 group-hover:bg-teal-500/20 transition-colors">
-                <Trophy className="w-7 h-7 text-teal-400" />
+            <div className="group rounded-2xl bg-white/5 border border-white/10 p-5 sm:p-6 hover:border-teal-500/50 transition-all duration-300">
+              <div className="w-12 h-12 rounded-xl bg-teal-500/10 flex items-center justify-center mb-4 group-hover:bg-teal-500/20 transition-colors">
+                <Trophy className="w-6 h-6 text-teal-400" />
               </div>
-              <h3 className="text-xl font-semibold text-white mb-3">
-                Passport Rankings
+              <h3 className="text-lg font-semibold text-white mb-2">
+                Rankings
               </h3>
-              <p className="text-gray-400 leading-relaxed">
-                Real-time power rankings for all 199 passports. See how every
-                country stacks up by visa-free access, mobility score, and
-                regional influence.
+              <p className="text-gray-400 text-sm leading-relaxed">
+                Power rankings for all 199 passports by visa-free access and mobility score.
               </p>
               <Link
                 href="/rankings"
-                className="inline-flex items-center gap-1 text-teal-400 hover:text-teal-300 mt-4 font-medium text-sm transition-colors"
+                className="inline-flex items-center gap-1 text-teal-400 hover:text-teal-300 mt-3 font-medium text-sm transition-colors"
               >
-                View Rankings
-                <span aria-hidden="true">&rarr;</span>
+                View Rankings <span aria-hidden="true">&rarr;</span>
               </Link>
             </div>
 
-            {/* Feature 2: Smart Compare */}
-            <div className="group rounded-2xl bg-white/5 border border-white/10 p-5 sm:p-8 hover:border-blue-500/50 transition-all duration-300">
-              <div className="w-14 h-14 rounded-xl bg-blue-500/10 flex items-center justify-center mb-5 group-hover:bg-blue-500/20 transition-colors">
-                <GitCompare className="w-7 h-7 text-blue-400" />
+            {/* Feature 2: Compare */}
+            <div className="group rounded-2xl bg-white/5 border border-white/10 p-5 sm:p-6 hover:border-blue-500/50 transition-all duration-300">
+              <div className="w-12 h-12 rounded-xl bg-blue-500/10 flex items-center justify-center mb-4 group-hover:bg-blue-500/20 transition-colors">
+                <GitCompare className="w-6 h-6 text-blue-400" />
               </div>
-              <h3 className="text-xl font-semibold text-white mb-3">
-                Compare & Combine
+              <h3 className="text-lg font-semibold text-white mb-2">
+                Compare
               </h3>
-              <p className="text-gray-400 leading-relaxed">
-                Combine up to 4 passports and see your total travel power.
-                Discover combined mobility score, global rank, and which passport
-                gives the best access to each destination.
+              <p className="text-gray-400 text-sm leading-relaxed">
+                Compare passports side by side. See scores, category breakdowns, and which is stronger.
               </p>
               <Link
                 href="/compare"
-                className="inline-flex items-center gap-1 text-blue-400 hover:text-blue-300 mt-4 font-medium text-sm transition-colors"
+                className="inline-flex items-center gap-1 text-blue-400 hover:text-blue-300 mt-3 font-medium text-sm transition-colors"
               >
-                Combine Passports
-                <span aria-hidden="true">&rarr;</span>
+                Compare Now <span aria-hidden="true">&rarr;</span>
               </Link>
             </div>
 
-            {/* Feature 3: AI Travel Advisor */}
-            <div className="group rounded-2xl bg-white/5 border border-white/10 p-5 sm:p-8 hover:border-purple-500/50 transition-all duration-300">
-              <div className="w-14 h-14 rounded-xl bg-purple-500/10 flex items-center justify-center mb-5 group-hover:bg-purple-500/20 transition-colors">
-                <Bot className="w-7 h-7 text-purple-400" />
+            {/* Feature 3: Combine */}
+            <div className="group rounded-2xl bg-white/5 border border-white/10 p-5 sm:p-6 hover:border-purple-500/50 transition-all duration-300">
+              <div className="w-12 h-12 rounded-xl bg-purple-500/10 flex items-center justify-center mb-4 group-hover:bg-purple-500/20 transition-colors">
+                <Combine className="w-6 h-6 text-purple-400" />
               </div>
-              <h3 className="text-xl font-semibold text-white mb-3">
-                AI Travel Advisor
+              <h3 className="text-lg font-semibold text-white mb-2">
+                Combine
               </h3>
-              <p className="text-gray-400 leading-relaxed">
-                Get personalized visa guidance powered by AI. Ask questions about
-                travel requirements, visa processes, and entry rules for any
-                destination.
+              <p className="text-gray-400 text-sm leading-relaxed">
+                Merge multiple passports and discover your combined travel power, rank, and destination access.
+              </p>
+              <Link
+                href="/combine"
+                className="inline-flex items-center gap-1 text-purple-400 hover:text-purple-300 mt-3 font-medium text-sm transition-colors"
+              >
+                Combine Passports <span aria-hidden="true">&rarr;</span>
+              </Link>
+            </div>
+
+            {/* Feature 4: AI Travel Advisor */}
+            <div className="group rounded-2xl bg-white/5 border border-white/10 p-5 sm:p-6 hover:border-orange-500/50 transition-all duration-300">
+              <div className="w-12 h-12 rounded-xl bg-orange-500/10 flex items-center justify-center mb-4 group-hover:bg-orange-500/20 transition-colors">
+                <Bot className="w-6 h-6 text-orange-400" />
+              </div>
+              <h3 className="text-lg font-semibold text-white mb-2">
+                AI Advisor
+              </h3>
+              <p className="text-gray-400 text-sm leading-relaxed">
+                Get personalized visa guidance powered by AI. Ask about travel requirements for any destination.
               </p>
               <Link
                 href="/advisor"
-                className="inline-flex items-center gap-1 text-purple-400 hover:text-purple-300 mt-4 font-medium text-sm transition-colors"
+                className="inline-flex items-center gap-1 text-orange-400 hover:text-orange-300 mt-3 font-medium text-sm transition-colors"
               >
-                Try Advisor
-                <span aria-hidden="true">&rarr;</span>
+                Try Advisor <span aria-hidden="true">&rarr;</span>
               </Link>
             </div>
           </div>
@@ -306,8 +323,8 @@ export default function Home() {
                 </p>
                 <div className="flex flex-col sm:flex-row items-start gap-3">
                   <Link
-                    href="/compare"
-                    className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-teal-500 to-blue-500 text-white font-semibold hover:from-teal-400 hover:to-blue-400 transition-all duration-200"
+                    href="/combine"
+                    className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-purple-500 to-blue-500 text-white font-semibold hover:from-purple-400 hover:to-blue-400 transition-all duration-200"
                   >
                     <Zap className="w-4 h-4" />
                     Combine Your Passports
@@ -442,19 +459,26 @@ export default function Home() {
             Dive into the data. Compare passports, discover rankings, and plan
             your next adventure with real-time visa intelligence.
           </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
             <Link
               href="/rankings"
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3 rounded-xl bg-teal-500 text-white font-semibold hover:bg-teal-400 transition-colors"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-teal-500 text-white font-semibold hover:bg-teal-400 transition-colors"
             >
               Get Started
             </Link>
             <Link
               href="/compare"
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3 rounded-xl bg-white/10 text-white font-semibold border border-white/20 hover:bg-white/20 transition-colors"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-white/10 text-white font-semibold border border-white/20 hover:bg-white/20 transition-colors"
+            >
+              <GitCompare className="w-4 h-4" />
+              Compare
+            </Link>
+            <Link
+              href="/combine"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-purple-500/20 to-blue-500/20 text-white font-semibold border border-purple-500/30 hover:from-purple-500/30 hover:to-blue-500/30 transition-all"
             >
               <Combine className="w-4 h-4" />
-              Combine Passports
+              Combine
             </Link>
           </div>
         </div>

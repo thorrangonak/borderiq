@@ -10,6 +10,7 @@ import {
   X,
   Trophy,
   GitCompare,
+  Combine,
   Compass,
   MapPin,
   Bot,
@@ -19,7 +20,8 @@ import {
 
 const navLinks = [
   { href: "/rankings", label: "Rankings", icon: Trophy, description: "Passport power rankings" },
-  { href: "/compare", label: "Compare & Combine", icon: GitCompare, description: "Combine passports & see total power" },
+  { href: "/compare", label: "Compare", icon: GitCompare, description: "Compare passports side by side" },
+  { href: "/combine", label: "Combine", icon: Combine, description: "Combine passports & see total power" },
   { href: "/explore", label: "Explore", icon: Compass, description: "Browse by region & color" },
   { href: "/countries", label: "Countries", icon: MapPin, description: "All 199 countries" },
   { href: "/advisor", label: "AI Advisor", icon: Bot, description: "Smart travel guidance" },
