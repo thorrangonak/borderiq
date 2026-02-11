@@ -7,8 +7,8 @@ import PassportCard from "@/components/ui/PassportCard";
 import WorldMapWrapper from "@/components/features/WorldMapWrapper";
 
 export const metadata: Metadata = {
-  title: "BorderIQ - Global Passport Intelligence | Passport Rankings & Visa Data 2026",
-  description: "Explore 199 passport rankings, visa-free travel scores, and real-time visa requirement data. Compare passports side by side, discover travel freedom with interactive world map.",
+  title: "BorderIQ - Passport Index 2026 | Power Rankings & Visa-Free Travel Data",
+  description: "Explore 199 passport rankings, visa-free travel scores, and real-time visa requirement data. Compare passports side by side, combine dual citizenship travel power, and discover visa-free destinations with our interactive world map.",
   alternates: { canonical: "https://borderiq.io" },
   openGraph: {
     title: "BorderIQ - Global Passport Intelligence",
@@ -72,6 +72,22 @@ export default function Home() {
                 acceptedAnswer: {
                   '@type': 'Answer',
                   text: 'BorderIQ tracks visa requirements for 199 passports covering over 39,000 visa policies worldwide.',
+                },
+              },
+              {
+                '@type': 'Question',
+                name: 'Can I compare two passports on BorderIQ?',
+                acceptedAnswer: {
+                  '@type': 'Answer',
+                  text: 'Yes, BorderIQ lets you compare up to 4 passports side by side. You can see shared visa-free destinations, unique access advantages, category breakdowns, and combined travel power. Visit our Compare or Combine tools to get started.',
+                },
+              },
+              {
+                '@type': 'Question',
+                name: 'What is the weakest passport in 2026?',
+                acceptedAnswer: {
+                  '@type': 'Answer',
+                  text: `The weakest passports in 2026 have the lowest mobility scores, meaning their holders need visas for most destinations. Check our rankings page for the complete list from strongest to weakest.`,
                 },
               },
             ],
@@ -446,6 +462,39 @@ export default function Home() {
               {weakestPassport.mobilityScore} destinations visa-free
             </p>
           </div>
+        </div>
+      </section>
+
+      {/* ===== Passport Index 2026 Content ===== */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16">
+        <h2 className="text-2xl sm:text-3xl font-bold text-white mb-4">
+          Passport Index 2026
+        </h2>
+        <div className="text-gray-400 leading-relaxed space-y-3 max-w-4xl">
+          <p>
+            The BorderIQ Passport Index ranks all 199 passports by their{" "}
+            <strong className="text-white">mobility score</strong> — the total number of
+            destinations accessible without a pre-departure visa. This includes visa-free entry,
+            visa on arrival (VOA), and electronic travel authorization (ETA).
+          </p>
+          <p>
+            In 2026, the strongest passport is{" "}
+            <Link href={`/country/${strongestPassport.slug}`} className="text-teal-400 hover:underline">
+              {strongestPassport.country}
+            </Link>{" "}
+            with a mobility score of {strongestPassport.mobilityScore}, while the global average is {avgMobility}.
+            European passports continue to dominate the top rankings thanks to EU/Schengen freedom of movement,
+            with Asian powerhouses like Japan, Singapore, and South Korea also in the top tier.
+          </p>
+          <p>
+            BorderIQ goes beyond simple rankings — you can{" "}
+            <Link href="/compare" className="text-teal-400 hover:underline">compare passports</Link> side by side,{" "}
+            <Link href="/combine" className="text-teal-400 hover:underline">combine dual citizenship</Link> to
+            calculate combined travel power, and{" "}
+            <Link href="/explore" className="text-teal-400 hover:underline">explore passports</Link> by
+            region, color, and score. Our data covers over {totalPolicies.toLocaleString()} visa policies
+            across 199 countries and territories.
+          </p>
         </div>
       </section>
 

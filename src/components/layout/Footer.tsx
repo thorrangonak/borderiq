@@ -2,10 +2,12 @@ import Link from "next/link";
 import { Globe } from "lucide-react";
 
 const footerLinks = [
-  { href: "/about", label: "About" },
-  { href: "/api", label: "API" },
-  { href: "/blog", label: "Blog" },
-  { href: "/contact", label: "Contact" },
+  { href: "/rankings", label: "Rankings" },
+  { href: "/compare", label: "Compare" },
+  { href: "/combine", label: "Combine" },
+  { href: "/explore", label: "Explore" },
+  { href: "/advisor", label: "AI Advisor" },
+  { href: "/countries", label: "Countries" },
 ];
 
 export function Footer() {

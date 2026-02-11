@@ -1,5 +1,6 @@
 import type { MetadataRoute } from 'next';
 import { COUNTRIES, slugify } from '@/lib/countries';
+import { getComparePairs, pairSlug } from '@/lib/seo-data';
 
 const BASE_URL = 'https://borderiq.io';
 
@@ -60,5 +61,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.7,
   }));
 
-  return [...staticPages, ...countryPages];
+  // Compare pair pages
+  const comparePages: MetadataRoute.Sitemap = getComparePairs().map(([a, b]) => ({
+    url: `${BASE_URL}/compare/${pairSlug(a, b)}`,
+    lastModified: now,
+    changeFrequency: 'monthly' as const,
+    priority: 0.6,
+  }));
+
+  return [...staticPages, ...countryPages, ...comparePages];
 }

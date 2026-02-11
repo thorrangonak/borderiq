@@ -2,10 +2,12 @@ import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
-import { ArrowLeft, Globe, GitCompare, Shield, Users } from "lucide-react";
+import { ArrowLeft, Globe, GitCompare, Shield, Users, ArrowRight } from "lucide-react";
 import { getRankings, getVisaData } from "@/lib/load-data";
 import { getCountryBySlug, COUNTRIES, slugify, getCountryByName } from "@/lib/countries";
 import { getCountryDetail } from "@/lib/data";
+import { getCountryFAQs, getSameRegionCountries, getSimilarRankCountries, getRelatedComparePagesForCountry } from "@/lib/seo-data";
+import { getFAQSchema } from "@/lib/structured-data";
 import DestinationTabs from "./DestinationTabs";
 
 export function generateStaticParams() {
@@ -25,8 +27,8 @@ export async function generateMetadata({
   const ranking = rankings.find(r => r.country === country.name);
 
   return {
-    title: `${country.name} Passport - Visa-Free Travel, Rankings & Visa Requirements`,
-    description: `${country.name} passport ranked #${ranking?.rank || 'N/A'} globally with ${ranking?.mobilityScore || 0} visa-free destinations. Explore visa requirements, travel freedom, and mobility score for ${country.name} passport holders.`,
+    title: `${country.name} Passport Ranking 2026 - #${ranking?.rank || 'N/A'} | ${ranking?.mobilityScore || 0} Visa-Free Destinations`,
+    description: `${country.name} passport is ranked #${ranking?.rank || 'N/A'} in 2026 with ${ranking?.mobilityScore || 0} visa-free destinations. ${ranking?.visaFreeCount || 0} visa-free, ${ranking?.visaOnArrivalCount || 0} VOA, ${ranking?.etaCount || 0} ETA. Full visa requirements and travel data for ${country.name} passport holders.`,
     alternates: { canonical: `https://borderiq.io/country/${slug}` },
     keywords: [
       `${country.name} passport`,
@@ -87,6 +89,12 @@ export default async function CountryDetailPage({
   const eVisaResolved = resolveDestinations(detail.eVisa);
   const visaRequiredResolved = resolveDestinations(detail.visaRequired);
 
+  const allRankings = getRankings();
+  const faqs = getCountryFAQs(country.name, ranking);
+  const sameRegion = getSameRegionCountries(country.name, allRankings, 5);
+  const similarRank = getSimilarRankCountries(country.name, allRankings, 5);
+  const relatedCompares = getRelatedComparePagesForCountry(country.name, 6);
+
   return (
     <div className="min-h-screen bg-slate-900">
       <script
@@ -120,6 +128,10 @@ export default async function CountryDetailPage({
             ],
           }),
         }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(getFAQSchema(faqs)) }}
       />
       {/* ===== Hero Section ===== */}
       <section className="relative overflow-hidden">
@@ -286,6 +298,116 @@ export default async function CountryDetailPage({
               </p>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* ===== Content Section ===== */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+        <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-white mb-4">
+          {meta.name} Passport Visa-Free Countries 2026
+        </h2>
+        <div className="text-gray-400 leading-relaxed space-y-3">
+          <p>
+            The {meta.name} passport is ranked <strong className="text-white">#{ranking.rank}</strong> in the
+            world in 2026, with a mobility score of <strong className="text-white">{ranking.mobilityScore}</strong>.
+            {meta.name} passport holders can travel to <strong className="text-teal-400">{ranking.visaFreeCount}</strong> countries
+            visa-free, <strong className="text-teal-400">{ranking.visaOnArrivalCount}</strong> with visa on arrival,
+            and <strong className="text-teal-400">{ranking.etaCount}</strong> with electronic travel authorization (ETA).
+          </p>
+          <p>
+            Located in {meta.subregion} ({meta.region}), the {meta.name} passport
+            requires a traditional visa or e-visa for {ranking.visaRequiredCount + ranking.eVisaCount} destinations.
+            {meta.name} also welcomes travelers from {detail.welcomingScore} different
+            passports without requiring a traditional visa.
+          </p>
+        </div>
+      </section>
+
+      {/* ===== FAQ Section ===== */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+        <div className="rounded-xl sm:rounded-2xl bg-white/5 border border-white/10 p-5 sm:p-6">
+          <h2 className="text-xl font-bold text-white mb-4">
+            Frequently Asked Questions
+          </h2>
+          {faqs.map((faq, i) => (
+            <details key={i} className="group mb-3 last:mb-0">
+              <summary className="cursor-pointer text-gray-300 hover:text-white font-medium py-2 px-3 rounded-lg hover:bg-white/5 transition-colors list-none flex items-center justify-between">
+                {faq.question}
+                <ArrowRight className="w-4 h-4 text-gray-500 group-open:rotate-90 transition-transform flex-shrink-0" />
+              </summary>
+              <p className="text-gray-400 text-sm leading-relaxed px-3 pb-2 pt-1">
+                {faq.answer}
+              </p>
+            </details>
+          ))}
+        </div>
+      </section>
+
+      {/* ===== Internal Links ===== */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {/* Same region */}
+          {sameRegion.length > 0 && (
+            <div className="rounded-xl bg-white/5 border border-white/10 p-5">
+              <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-3">
+                {meta.region} Passports
+              </h3>
+              <div className="space-y-2">
+                {sameRegion.map(r => (
+                  <Link
+                    key={r.country}
+                    href={`/country/${r.slug}`}
+                    className="flex items-center justify-between text-sm text-gray-300 hover:text-teal-400 transition-colors"
+                  >
+                    <span>{r.country}</span>
+                    <span className="text-gray-500 text-xs">#{r.rank} &middot; {r.mobilityScore}</span>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Similar rank */}
+          {similarRank.length > 0 && (
+            <div className="rounded-xl bg-white/5 border border-white/10 p-5">
+              <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-3">
+                Similar Ranked Passports
+              </h3>
+              <div className="space-y-2">
+                {similarRank.map(r => (
+                  <Link
+                    key={r.country}
+                    href={`/country/${r.slug}`}
+                    className="flex items-center justify-between text-sm text-gray-300 hover:text-teal-400 transition-colors"
+                  >
+                    <span>{r.country}</span>
+                    <span className="text-gray-500 text-xs">#{r.rank} &middot; {r.mobilityScore}</span>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Compare pages */}
+          {relatedCompares.length > 0 && (
+            <div className="rounded-xl bg-white/5 border border-white/10 p-5">
+              <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-3">
+                Compare {meta.name}
+              </h3>
+              <div className="space-y-2">
+                {relatedCompares.map(({ pair, countryA, countryB }) => (
+                  <Link
+                    key={pair}
+                    href={`/compare/${pair}`}
+                    className="flex items-center gap-2 text-sm text-gray-300 hover:text-teal-400 transition-colors"
+                  >
+                    <GitCompare className="w-3.5 h-3.5 text-gray-500 flex-shrink-0" />
+                    {countryA} vs {countryB}
+                  </Link>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </section>
 

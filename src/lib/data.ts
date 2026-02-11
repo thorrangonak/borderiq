@@ -289,6 +289,158 @@ export function comparePassports(visaData: VisaEntry[], countries: string[]): {
   };
 }
 
+// ─── Detailed comparison (used by compare pages + API) ───────────────
+const VISA_PRIORITY: Record<string, number> = {
+  'visa-free': 1,
+  'voa': 2,
+  'eta': 3,
+  'e-visa': 4,
+  'visa-required': 5,
+  'no-admission': 6,
+};
+
+function classifyRequirement(req: string): string {
+  const r = req.trim().toLowerCase();
+  const num = parseInt(r);
+  if (r === 'visa free' || (!isNaN(num) && num > 0)) return 'visa-free';
+  if (r === 'visa on arrival') return 'voa';
+  if (r === 'eta') return 'eta';
+  if (r === 'e-visa') return 'e-visa';
+  if (r === 'no admission') return 'no-admission';
+  return 'visa-required';
+}
+
+export interface DestinationEntry {
+  destination: string;
+  code: string;
+  slug: string;
+  bestStatus: string;
+  bestPassport: string;
+  perPassport: Record<string, string>;
+}
+
+export interface DetailedComparison {
+  countries: string[];
+  rankings: Record<string, PassportRanking>;
+  combinedMobilityScore: number;
+  combinedRank: number;
+  combinedStats: { visaFree: number; voa: number; eta: number; eVisa: number; visaRequired: number; noAdmission: number };
+  individualStats: Record<string, { visaFree: number; voa: number; eta: number; eVisa: number; visaRequired: number; noAdmission: number }>;
+  gainFromCombining: number;
+  maxIndividualScore: number;
+  destinationTable: DestinationEntry[];
+}
+
+export function getDetailedComparison(visaData: VisaEntry[], countryNames: string[]): DetailedComparison {
+  const allRankings = calculateRankings(visaData);
+
+  const rankings: Record<string, PassportRanking> = {};
+  for (const name of countryNames) {
+    const ranking = allRankings.find(r => r.country === name);
+    if (ranking) rankings[name] = ranking;
+  }
+
+  const accessMap: Record<string, Record<string, string>> = {};
+  for (const name of countryNames) {
+    accessMap[name] = {};
+  }
+
+  for (const entry of visaData) {
+    if (entry.requirement === '-1') continue;
+    if (!countryNames.includes(entry.passport)) continue;
+    accessMap[entry.passport][entry.destination] = classifyRequirement(entry.requirement);
+  }
+
+  const allDestinations = new Set<string>();
+  for (const map of Object.values(accessMap)) {
+    for (const dest of Object.keys(map)) {
+      if (!countryNames.includes(dest)) {
+        allDestinations.add(dest);
+      }
+    }
+  }
+
+  const destinationTable: DestinationEntry[] = [];
+  const combinedStats = { visaFree: 0, voa: 0, eta: 0, eVisa: 0, visaRequired: 0, noAdmission: 0 };
+  const individualStats: Record<string, typeof combinedStats> = {};
+  for (const name of countryNames) {
+    individualStats[name] = { visaFree: 0, voa: 0, eta: 0, eVisa: 0, visaRequired: 0, noAdmission: 0 };
+  }
+
+  for (const dest of Array.from(allDestinations).sort()) {
+    const destMeta = COUNTRIES[dest];
+    if (!destMeta) continue;
+
+    const perPassport: Record<string, string> = {};
+    let bestStatus = 'no-admission';
+    let bestPassport = countryNames[0];
+    let bestPriority = 99;
+
+    for (const passport of countryNames) {
+      const status = accessMap[passport][dest] || 'no-admission';
+      perPassport[passport] = status;
+
+      const iStats = individualStats[passport];
+      if (status === 'visa-free') iStats.visaFree++;
+      else if (status === 'voa') iStats.voa++;
+      else if (status === 'eta') iStats.eta++;
+      else if (status === 'e-visa') iStats.eVisa++;
+      else if (status === 'no-admission') iStats.noAdmission++;
+      else iStats.visaRequired++;
+
+      const priority = VISA_PRIORITY[status] ?? 99;
+      if (priority < bestPriority) {
+        bestPriority = priority;
+        bestStatus = status;
+        bestPassport = passport;
+      }
+    }
+
+    destinationTable.push({
+      destination: dest,
+      code: destMeta.code,
+      slug: slugify(dest),
+      bestStatus,
+      bestPassport,
+      perPassport,
+    });
+
+    if (bestStatus === 'visa-free') combinedStats.visaFree++;
+    else if (bestStatus === 'voa') combinedStats.voa++;
+    else if (bestStatus === 'eta') combinedStats.eta++;
+    else if (bestStatus === 'e-visa') combinedStats.eVisa++;
+    else if (bestStatus === 'no-admission') combinedStats.noAdmission++;
+    else combinedStats.visaRequired++;
+  }
+
+  const combinedMobilityScore = combinedStats.visaFree + combinedStats.voa + combinedStats.eta;
+
+  let combinedRank = 1;
+  for (const r of allRankings) {
+    if (r.mobilityScore > combinedMobilityScore) {
+      combinedRank = r.rank + 1;
+    } else {
+      break;
+    }
+  }
+
+  const individualScores = countryNames.map(n => rankings[n]?.mobilityScore || 0);
+  const maxIndividualScore = Math.max(...individualScores);
+  const gainFromCombining = combinedMobilityScore - maxIndividualScore;
+
+  return {
+    countries: countryNames,
+    rankings,
+    combinedMobilityScore,
+    combinedRank,
+    combinedStats,
+    individualStats,
+    gainFromCombining,
+    maxIndividualScore,
+    destinationTable,
+  };
+}
+
 // DSS (Destination Significance Score) - weighted ranking
 export function calculateDSS(rankings: PassportRanking[]): (PassportRanking & { dssScore: number })[] {
   // Weight destinations by their "exclusivity" - countries visited by fewer passports are worth more

@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import { parseVisaData, calculateRankings, calculateWelcomingRanks, getCountryDetail, comparePassports, type VisaEntry } from './data';
+import { parseVisaData, calculateRankings, calculateWelcomingRanks, getCountryDetail, comparePassports, getDetailedComparison, type VisaEntry } from './data';
 
 let _csvText: string | null = null;
 let _visaData: VisaEntry[] | null = null;
@@ -31,4 +31,8 @@ export function getCountryDetails(country: string) {
 
 export function getComparison(countries: string[]) {
   return comparePassports(getVisaData(), countries);
+}
+
+export function getDetailedComparisonData(countries: string[]) {
+  return getDetailedComparison(getVisaData(), countries);
 }
